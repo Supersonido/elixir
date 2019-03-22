@@ -63,7 +63,7 @@ defmodule Mix.Dep.Loader do
   latest status and children.
   """
   def load(%Mix.Dep{manager: manager, scm: scm, opts: opts} = dep, children) do
-    manager = scm_manager(scm, opts) || manager || infer_manager(opts[:dest])
+    manager = infer_manager(opts[:dest])
     dep = %{dep | manager: manager, status: scm_status(scm, opts)}
 
     {dep, children} =
@@ -307,7 +307,7 @@ defmodule Mix.Dep.Loader do
         # Pass the manager because deps of a Rebar project need
         # to default to Rebar if we cannot chose a manager from
         # files in the dependency
-        Enum.map(children, &to_dep(&1, from, manager))
+        Enum.map(children, &to_dep(&1, from))
       else
         rebar_children(config, manager, opts[:dest])
       end
