@@ -62,8 +62,8 @@ defmodule Mix.Dep.Loader do
   Loads the given dependency information, including its
   latest status and children.
   """
-  def load(%Mix.Dep{manager: manager, scm: scm, opts: opts} = dep, children) do
-    manager = infer_manager(opts[:dest])
+  def load(%Mix.Dep{scm: scm, opts: opts} = dep, children) do
+    manager = scm_manager(scm, opts) || infer_manager(opts[:dest])
     dep = %{dep | manager: manager, status: scm_status(scm, opts)}
 
     {dep, children} =
